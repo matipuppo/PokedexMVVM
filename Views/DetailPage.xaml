@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:PokeDexMVVM.ViewModels"
+             x:Class="PokeDexMVVM.Views.DetailPage"
+             BackgroundColor="White">
+
+    <!--Se asigna el BindingContext a la vista para enlazar con el DetailViewModel-->
+    <ContentPage.BindingContext>
+        <viewmodels:DetailViewModel />
+    </ContentPage.BindingContext>
+
+    <!-- Contenedor gris principal -->
+    <Frame BorderColor="Gray"
+           BackgroundColor="#E2E8F0"
+           HorizontalOptions="Fill"
+           VerticalOptions="FillAndExpand">
+
+        <!--Scrolll para permitir desplazamiento en caso de contenido largo-->
+        <ScrollView>
+            <VerticalStackLayout Padding="15" 
+                                 Spacing="20">
+
+                <!-- Título -->
+                <Label Text="Ver detalles"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       TextColor="Black"
+                       HorizontalOptions="Center"/>
+
+                <!-- Tarjeta con imagen del pokemon -->
+                <Frame BorderColor="Gray"
+                       BackgroundColor="White"
+                       WidthRequest="300"
+                       HeightRequest="300"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Start">
+                    
+                    <Image Source="{Binding DetallePokemon.Sprites.FrontDefault}"
+                           Aspect="AspectFit"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Fill"/>
+                </Frame>
+
+                <!-- Nombre -->
+                <Label Text="{Binding NombrePokemon}"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="Black"
+                       Margin="0,0,0,20"/>
+
+                <!-- Tarjeta de Tipos y Estadísticas -->
+                <Frame BorderColor="Gray"
+                       BackgroundColor="White"
+                       HorizontalOptions="Fill"
+                       VerticalOptions="Start">
+
+                    <VerticalStackLayout Spacing="15">
+
+                        <!-- Seccion Tipos -->
+                        <Grid ColumnDefinitions="Auto, *" 
+                              ColumnSpacing="10">
+                            
+                            <Label Text="Tipo"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="Black"
+                                   Grid.Column="0"/>
+                            
+                            <Label Text="{Binding TipoTexto}" 
+                                   FontSize="18"
+                                   TextColor="Black"
+                                   HorizontalOptions="End"
+                                   Grid.Column="1"/>
+                        </Grid>
+
+                        <!-- Estadísticas -->
+                        <VerticalStackLayout Spacing="10">
+
+                            <!-- HP -->
+                            <Grid ColumnDefinitions="Auto, *, Auto" 
+                                  ColumnSpacing="10">
+                                
+                                <Label Text="HP:" 
+                                       FontAttributes="Bold" 
+                                       TextColor="Black" 
+                                       Grid.Column="0"/>
+                                
+                                <ProgressBar Progress="{Binding DetallePokemon.Stats[0].Valor, Converter={StaticResource StatToProgressConverter}}"
+                                             Grid.Column="1"
+                                             ProgressColor="Green"
+                                             HorizontalOptions="Fill"
+                                             VerticalOptions="Center"/>
+                                
+                                <Label Text="{Binding DetallePokemon.Stats[0].Valor}" 
+                                       TextColor="Black" 
+                                       Grid.Column="2" 
+                                       HorizontalOptions="End"/>
+                            </Grid>
+
+                            <!-- Ataque -->
+                            <Grid ColumnDefinitions="Auto, *, Auto" 
+                                  ColumnSpacing="10">
+                                
+                                <Label Text="Ataque:" 
+                                       FontAttributes="Bold" 
+                                       TextColor="Black" 
+                                       Grid.Column="0"/>
+                                
+                                <ProgressBar Progress="{Binding DetallePokemon.Stats[1].Valor, Converter={StaticResource StatToProgressConverter}}"
+                                             Grid.Column="1"
+                                             ProgressColor="DarkRed"
+                                             HorizontalOptions="Fill"
+                                             VerticalOptions="Center"/>
+                                
+                                <Label Text="{Binding DetallePokemon.Stats[1].Valor}" 
+                                       TextColor="Black" 
+                                       Grid.Column="2" 
+                                       HorizontalOptions="End"/>
+                            </Grid>
+
+                            <!-- Defensa -->
+                            <Grid ColumnDefinitions="Auto, *, Auto" 
+                                  ColumnSpacing="10">
+                                
+                                <Label Text="Defensa:" 
+                                       FontAttributes="Bold" 
+                                       TextColor="Black" 
+                                       Grid.Column="0"/>
+                                
+                                <ProgressBar Progress="{Binding DetallePokemon.Stats[2].Valor, Converter={StaticResource StatToProgressConverter}}"
+                                             Grid.Column="1"
+                                             ProgressColor="Blue"
+                                             HorizontalOptions="Fill"
+                                             VerticalOptions="Center"/>
+                                
+                                <Label Text="{Binding DetallePokemon.Stats[2].Valor}" 
+                                       TextColor="Black" 
+                                       Grid.Column="2" 
+                                       HorizontalOptions="End"/>
+                            </Grid>
+
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Frame>
+</ContentPage>
+
+
+
+
+
+
+
+

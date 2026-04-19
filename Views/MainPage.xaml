@@ -1,0 +1,91 @@
+<?xml version ="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:viewmodels="clr-namespace:PokeDexMVVM.ViewModels"
+                 x:Class="PokeDexMVVM.Views.MainPage"
+                 BackgroundColor="White">
+
+    <!--Asigna el BindingContext a la vista para enlazar con el MainViewModel-->
+    <!--Esto permite que todos los elementos de la interfaz puedan acceder a las propiedades y comandos del MainViewModel.-->
+    <ContentPage.BindingContext>
+        <viewmodels:MainViewModel />
+    </ContentPage.BindingContext>
+
+    <!-- Usamos Grid con 4 filas -->
+    <Grid RowDefinitions="Auto,Auto,Auto,*" 
+          Padding="10">
+
+
+        <!-- Título -->
+        <Label Grid.Row="0"
+                   Text="Pokedex"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="Black"
+                   Margin="0,20,0,15"/>
+
+        <!-- Barra de búsqueda  enlazada con textoBusqueda y comando FiltrarPokemonsCommand -->
+        <SearchBar Grid.Row="1"
+                       Placeholder="Buscar Pokémon..."
+                       Text="{Binding TextoBusqueda}"
+                       SearchCommand="{Binding FiltrarPokemonsCommand}" 
+                       PlaceholderColor="Gray"
+                       BackgroundColor="#E2E8F0"
+                       TextColor="Black"
+                       Margin="10"/>
+
+        <!-- Mensaje de estado enlazado con la propiedad MensajeEstado del ViewModel -->
+        <Label Grid.Row="2"
+                Text="{Binding MensajeEstado}"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                Margin="10" 
+                TextColor="Black"/>
+
+        <!-- Lista de Pokémon en cuadrícula con scroll -->
+        <CollectionView Grid.Row="3"
+                        ItemsSource="{Binding ListaPokemons}"
+                        SelectionMode="Single"
+                        SelectionChanged="OnPokemonSeleccionado">
+
+            <CollectionView.ItemsLayout>
+                <!-- layout de la cuadrícula con 3 columnas y espaciado entre elementos -->
+                <GridItemsLayout Orientation="Vertical" 
+                                 Span="3" VerticalItemSpacing="10" 
+                                 HorizontalItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
+            
+            <!--Plantilla de cada tarjeta pokemon-->
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10"
+                           Margin="8"
+                           BorderColor="Gray"
+                           CornerRadius="30"
+                           BackgroundColor="#E2E8F0">
+                        <VerticalStackLayout HorizontalOptions="Center">
+                            
+                            <!-- Imagen del Pokémon -->
+                            <Image Source="{Binding Imagen}"
+                                   HeightRequest="180"
+                                   Aspect="AspectFit" />
+
+                            <!-- Nombre del Pokémon -->
+                            <Label Text="{Binding NombreCapitalizado}"
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center"
+                                   Margin="0,5,0,0"
+                                   TextColor="Black"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
+
+
+
+
+

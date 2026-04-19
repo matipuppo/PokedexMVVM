@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+ <!--Pagina de inicio de la aplicacion-->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:PokeDexMVVM.ViewModels"
+             x:Class="PokeDexMVVM.Views.StartPage"
+             BackgroundColor="White">
+
+    <!--Contenedor vertical para centrar el contenido-->
+    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="30">
+        
+        <!-- Imagen Pokéball (archivo local en recursos) -->
+        <Image Source="pokeball.png" HeightRequest="300"/>
+
+        <!-- Botón para cargar enlazado a al comando IrAPokedexCommand-->
+        <!--Al presionar el boton navega hacia MainPage-->
+        <Button Text="Cargar Pokémon"
+                Command="{Binding IrAPokedexCommand}"
+                BackgroundColor="#E2E8F0"
+                TextColor="Black"
+                FontAttributes="Bold"/>
+        
+    </VerticalStackLayout>
+</ContentPage>
