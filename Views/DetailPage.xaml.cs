@@ -10,7 +10,7 @@ namespace PokeDexMVVM.Views
         {
             // iniciaiza los componentes de la página y establece el contexto de enlace a una nueva instancia de DetailViewModel
             InitializeComponent();
-            BindingContext = new DetailViewModel();
+            
         }
     }
 }

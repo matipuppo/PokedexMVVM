@@ -73,10 +73,10 @@ namespace PokeDexMVVM.ViewModels
                     // Se obtiene el detalle de cada pokemon para obtener su imagen
                     var detalle = await servicioPokemon.ObtenerDetallePokemonAsync(pokemon.Url);
 
-                    // Se crea un nuevo objeto PokemonResult con la primera letra del nombre en mayúscula, la URL y la imagen
+                    // Se crea un nuevo objeto PokemonResult con el nombre, URL y la imagen del pokemon
                     var resultado = new PokemonResult
                     {
-                        Nombre = char.ToUpper(pokemon.Nombre[0]) + pokemon.Nombre.Substring(1),
+                        Nombre = pokemon.Nombre,
                         Url = pokemon.Url,
                         Imagen = detalle.Sprites.FrontDefault
                     };
