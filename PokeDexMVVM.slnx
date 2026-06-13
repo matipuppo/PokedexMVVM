@@ -1,4 +1,4 @@
 <Solution>
-  <Project Path="../PokeDexMVVM.Tests/PokeDexMVVM.Tests.csproj" />
   <Project Path="PokeDexMVVM.csproj" />
+  <Project Path="PokeDexMVVM.Tests/PokeDexMVVM.Tests.csproj" />
 </Solution>
