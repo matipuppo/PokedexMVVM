@@ -17,6 +17,7 @@ namespace PokeDexMVVM
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("MaterialIcons-Regular.ttf", "MaterialIcons"); // Fuente para iconos de Material Design
                 });
 
 
@@ -33,10 +34,13 @@ namespace PokeDexMVVM
             //Transient: una nueva instancia del viwModel cada vez que se navega a la pantalla
             builder.Services.AddTransient<MainViewModel>();
             builder.Services.AddTransient<DetailViewModel>();
+            builder.Services.AddTransient<FavoritosViewModel>();
+            
 
             //Transient: se crea una nueva instancia de la pagina cada ve que se navea a ella
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<DetailPage>();
+            builder.Services.AddTransient<FavoritosPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

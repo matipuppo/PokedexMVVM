@@ -1,9 +1,10 @@
 ﻿using System.Text.Json.Serialization;       // Para usar JsonPropertyName y mapear las propiedades JSON a las propiedades de la clase
+using PokeDexMVVM.ViewModels;              // Para heredar de BaseViewModel y usar la funcionalidad de notificación de cambios en la UI
 
 namespace PokeDexMVVM.Models
 {
     // Clase que representa un resultado de Pokémon en la lista obtenida de la API
-    public class PokemonResult
+    public class PokemonResult : PokeDexMVVM.ViewModels.BaseViewModel
     {
         // Mapear la propiedad "name" del JSON a la propiedad "Nombre" de la clase
         [JsonPropertyName("name")]
@@ -15,6 +16,14 @@ namespace PokeDexMVVM.Models
 
         // Propiedad adicional para almacenar la URL de la imagen del Pokémon
         public string Imagen { get; set; }
+
+        //Indica si el pokeon esta marcado como favorito
+        private bool esFavorito;
+        public bool EsFavorito
+        {
+            get => esFavorito;
+            set => SetProperty(ref esFavorito, value);
+        }
 
         // Propiedad calculada para mostrar con mayúscula inicial
         public string NombreCapitalizado

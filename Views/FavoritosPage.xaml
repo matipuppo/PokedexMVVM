@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+				x:Class="PokeDexMVVM.Views.FavoritosPage"
+			 BackgroundColor="White"
+				Title="Favoritos">
+
+	<ScrollView>
+		<VerticalStackLayout Padding="15"
+                             Spacing="15">
+
+			<!--Titulo-->
+			<Label Text="Pokémons Favoritos"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="Black"
+                   HorizontalOptions="Center" />
+
+			<!--Mensaje de estado-->
+			<Label Text="{Binding MensajEstado}"
+                   FontSize="18"
+                   TextColor="Gray"
+                   HorizontalOptions="Center" />
+
+			<!--Lista de pokémons favoritos-->
+			<CollectionView ItemsSource="{Binding Favoritos}">
+				<CollectionView.ItemTemplate>
+					<DataTemplate>
+						<Frame BorderColor="Gray"
+                               BackgroundColor="#E2E8F0"
+                               CornerRadius="10"
+                               Padding="10"
+                               Margin="0,5">
+
+							<Grid ColumnDefinitions="Auto, *, Auto"
+                                 ColumnSpacing="10">
+
+								<!--Imagen del pokemon-->
+								<Image Source="{Binding Imagen}"
+                                       WidthRequest="60"
+                                       HeightRequest="60"
+                                       Grid.Column="0" />
+
+								<!--Nombre del Pokemon-->
+								<Label Text="{Binding Nombre}"
+                                       FontSize="18"
+                                       FontAttributes="Bold"
+                                       TextColor="Black"
+                                       VerticalOptions="Center"
+                                       Grid.Column="1" />
+
+								<!--Boton Eliminar-->
+								<Button Text="Eliminar"
+										BackgroundColor="#EF4444"
+										TextColor="White"
+										FontSize="14"
+										Padding="5,2"
+										Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EliminarFavoritoCommand}"
+										CommandParameter="{Binding .}"
+										Grid.Column="2" />
+
+							</Grid>
+						</Frame>
+					</DataTemplate>
+				</CollectionView.ItemTemplate>
+			</CollectionView>
+		</VerticalStackLayout>
+	</ScrollView>
+</ContentPage>

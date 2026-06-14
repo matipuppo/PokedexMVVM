@@ -3,7 +3,8 @@ using System.Threading.Tasks;               // se usa para Task
 using System.Windows.Input;                 // se usa para ICommand
 using PokeDexMVVM.Services;                 
 using PokeDexMVVM.Models;
-using System.Linq;                          // se usa para filtrar con LINQ
+using System.Linq;
+using PokeDexMVVM.Repositories;                          // se usa para filtrar con LINQ
 
 namespace PokeDexMVVM.ViewModels
 {
@@ -11,6 +12,9 @@ namespace PokeDexMVVM.ViewModels
     {
         // Servicio para consumir la API
         private readonly PokemonService servicioPokemon;
+
+        //Repositorio local para acceder a favoritos en la bd
+        private readonly IPokemonLocalRepository repositorio;
 
         // Lista completa de pokmeons
         private ObservableCollection<PokemonResult> TodosLosPokemons { get; set; } = new();
@@ -43,13 +47,16 @@ namespace PokeDexMVVM.ViewModels
         // Comandos para la UI (para cargar y filtrar pokemones)
         public ICommand CargarPokemonsCommand { get; }
         public ICommand FiltrarPokemonsCommand { get; }
+        public ICommand ToggleFavoritoCommand { get; }
 
         // Constructor recibe el servicio por DI en lugar de crearlo directamente
-        public MainViewModel(PokemonService servicio)
+        public MainViewModel(PokemonService servicio, IPokemonLocalRepository repositorio)
         {
             servicioPokemon = servicio;
+            this.repositorio = repositorio;
             CargarPokemonsCommand = new Command(async () => await CargarPokemonsAsync() );
             FiltrarPokemonsCommand = new Command(FiltrarPokemons);
+            ToggleFavoritoCommand = new Command<PokemonResult>(async(pokemon) => await ToggleFavoritoAsync(pokemon));
         }
 
         // Método para cargar Pokémon desde la API
@@ -78,7 +85,8 @@ namespace PokeDexMVVM.ViewModels
                     {
                         Nombre = pokemon.Nombre,
                         Url = pokemon.Url,
-                        Imagen = detalle.Sprites.FrontDefault
+                        Imagen = detalle.Sprites.FrontDefault,
+                        EsFavorito = await repositorio.EsFavoritoAsync(pokemon.Nombre)
                     };
 
                     // Se agrega el resultado a la lista completa y a la lista filtrada
@@ -94,6 +102,33 @@ namespace PokeDexMVVM.ViewModels
                 // En caso de error, se muestra el mensaje de error en el estado
                 MensajeEstado = ex.Message;
             }
+        }
+
+        // Metodo para agregar o quitar un pokemon de favoritos
+        private async Task ToggleFavoritoAsync(PokemonResult pokemon)
+        {
+            if (pokemon.EsFavorito)
+            {
+                // Si ya es favorito, los busca por nombre y lo elimina
+                var favoritos = await repositorio.ObtenerFavoritosAsync();
+                var favorito = favoritos.FirstOrDefault(f => f.Nombre == pokemon.Nombre);
+                if (favorito != null)
+                    await repositorio.EliminarFavoritoAsync(favorito.Id);
+            }
+            else
+            {
+                // Si no es favorito, se agrega
+                await repositorio.AgregarFavoritoAsync(new PokemonFavorito
+                {
+                    Nombre = pokemon.Nombre,
+                    Url = pokemon.Url,
+                    Imagen = pokemon.Imagen
+                });
+            }
+
+            // Actualiaz el estado del icono en la UI
+            pokemon.EsFavorito = !pokemon.EsFavorito;
+            OnPropertyChanged(nameof(ListaPokemon));
         }
 
         // Método para filtrar según el texto de búsqueda

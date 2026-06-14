@@ -58,21 +58,50 @@
                            Margin="8"
                            BorderColor="Gray"
                            CornerRadius="30"
-                           BackgroundColor="#E2E8F0">
-                        <VerticalStackLayout HorizontalOptions="Center">
-                            
-                            <!-- Imagen del Pokémon -->
-                            <Image Source="{Binding Imagen}"
-                                   HeightRequest="180"
-                                   Aspect="AspectFit" />
+                           BackgroundColor="#E2E8F0"
+                           HeightRequest="260">
 
-                            <!-- Nombre del Pokémon -->
-                            <Label Text="{Binding NombreCapitalizado}"
-                                   FontAttributes="Bold"
-                                   HorizontalOptions="Center"
-                                   Margin="0,5,0,0"
-                                   TextColor="Black"/>
-                        </VerticalStackLayout>
+                        <AbsoluteLayout>
+
+                            <VerticalStackLayout HorizontalOptions="Center"
+                                                 Padding="10"
+                                                 AbsoluteLayout.LayoutBounds="0,0,1,1"
+                                                 AbsoluteLayout.LayoutFlags="All">
+
+                                <!-- Imagen del Pokémon -->
+                                <Image Source="{Binding Imagen}"
+                                        HeightRequest="180"
+                                        Aspect="AspectFit" />
+
+                                <!-- Nombre del Pokémon -->
+                                <Label Text="{Binding NombreCapitalizado}"
+                                        FontAttributes="Bold"
+                                        HorizontalOptions="Center"
+                                        Margin="0,5,0,0"
+                                        TextColor="Black"/>
+
+
+                            </VerticalStackLayout>
+
+
+                        
+                        
+                            <!--Icono de Favorito-->
+                            <Button Text="{Binding EsFavorito, Converter={StaticResource BoolToBookmarkConverter}}"
+                                    FontFamily="MaterialIcons"
+                                    FontSize="24"
+                                    TextColor="{Binding EsFavorito, Converter={StaticResource BoolToColorConverter}}"
+                                    BackgroundColor="Transparent"
+                                    Padding="0"
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleFavoritoCommand}"
+                                    CommandParameter="{Binding .}"
+                                    AbsoluteLayout.LayoutBounds="1,0,40,40"
+                                    AbsoluteLayout.LayoutFlags="XProportional"/>
+
+                        </AbsoluteLayout>
+
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
