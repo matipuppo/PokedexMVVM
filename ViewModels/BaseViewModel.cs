@@ -13,7 +13,9 @@ namespace PokeDexMVVM.ViewModels
         // CallerMemberName permite que se use el nombre de la popiedad automáticamente si no se especifica
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            // Siempre despachamos al hilo principal para evitar COMException en transiciones de página en Windows
+            MainThread.BeginInvokeOnMainThread(() =>
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
         }
 
         //Metodo auxiliar para asignar valores y notificar cambios

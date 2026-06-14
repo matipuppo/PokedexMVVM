@@ -12,9 +12,9 @@ namespace PokeDexMVVM.ViewModels
         public StartViewModel()
         {
             // Comando asincrono que navega a la MainPage al ejecutarse
-            IrAPokedexCommand = new Command(async () =>
+            IrAPokedexCommand = new Command(() =>
             {
-                await Shell.Current.GoToAsync(nameof(Views.MainPage));
+                Application.Current!.Windows[0].Page = new AppShell();
             });
         }
     }

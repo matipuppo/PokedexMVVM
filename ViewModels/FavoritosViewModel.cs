@@ -1,5 +1,6 @@
 ﻿using PokeDexMVVM.Models;
 using PokeDexMVVM.Repositories;
+using PokeDexMVVM.Views;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -26,11 +27,15 @@ namespace PokeDexMVVM.ViewModels
         // Comando para eliminar un favorito
         public ICommand EliminarFavoritoCommand { get; }
 
+        // Comando para ver el detalle de un favorito
+        public ICommand VerDetalleCommand { get; }
+
         // Constructor que recibe el repositorio por DI
         public FavoritosViewModel(IPokemonLocalRepository repositorio)
         {
             this.repositorio = repositorio;
             EliminarFavoritoCommand = new Command<PokemonFavorito>(async(pokemon) => await EliminarFavoritosAsync(pokemon));
+            VerDetalleCommand = new Command<PokemonFavorito>(async(pokemon) => await VerDetalleAsync(pokemon));
         }
 
         //Carga los favoritos desde la bd
@@ -38,18 +43,31 @@ namespace PokeDexMVVM.ViewModels
         {
             try
             {
-                mensajeEstado = "Cargando Favoritos...";
+                MensajEstado = "Cargando Favoritos...";
                 var lista = await repositorio.ObtenerFavoritosAsync();
                 Favoritos.Clear();
                 foreach (var pokemon in lista)
                     Favoritos.Add(pokemon);
 
-                mensajeEstado = Favoritos.Count == 0 ? "No tenes Pokemons favoritos guardados." : string.Empty; 
+                MensajEstado = Favoritos.Count == 0 ? "No tenes Pokemons favoritos guardados." : string.Empty; 
             }
             catch(Exception ex) 
             {
                 MensajEstado = $"Error al cargar favoritos: {ex.Message}";
             }
+        }
+
+        // Navega al DetallePokemon seleccionado
+        private async Task VerDetalleAsync(PokemonFavorito pokemon)
+        {
+            var parametros = new Dictionary<string, object>
+            {
+                
+                { "urlPokemon", pokemon.Url },
+                { "nombrePokemon", pokemon.Nombre },
+            };
+
+            await Shell.Current.GoToAsync(nameof(DetailPage), parametros);
         }
 
         //Eliminar un pokemon de favoritos y recargar la lista

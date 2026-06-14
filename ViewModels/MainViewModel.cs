@@ -128,7 +128,7 @@ namespace PokeDexMVVM.ViewModels
 
             // Actualiaz el estado del icono en la UI
             pokemon.EsFavorito = !pokemon.EsFavorito;
-            OnPropertyChanged(nameof(ListaPokemon));
+            OnPropertyChanged(nameof(ListaPokemons));
         }
 
         // Método para filtrar según el texto de búsqueda

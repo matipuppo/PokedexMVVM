@@ -9,11 +9,9 @@ namespace PokeDexMVVM
             // Inicializa los componentes definidos en AppShell.xaml
             InitializeComponent();
 
-            // Registra las rutas para la navegación dentro de la aplicación
-            Routing.RegisterRoute(nameof(StartPage), typeof(StartPage));
-            Routing.RegisterRoute(nameof(Views.MainPage), typeof(Views.MainPage));
+
+            // Solo se registran rutas de páginas que no son parte del TabBar
             Routing.RegisterRoute(nameof(DetailPage), typeof(DetailPage));
-            Routing.RegisterRoute(nameof(FavoritosPage), typeof(FavoritosPage));
         }
     }
 }

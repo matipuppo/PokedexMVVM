@@ -1,34 +1,29 @@
-﻿using PokeDexMVVM.Models;           
+﻿using PokeDexMVVM.Models;
 using PokeDexMVVM.Services;
 using System.Linq;                      // se usa para concatenar los tipos con LINQ
 
 namespace PokeDexMVVM.ViewModels
 {
-    // El atributo QueryProperty permite recibir parámetros al navegar con Shell a esta página.
-    // En este caso, recibimos la URL y el nombre del Pokémon.
-    [QueryProperty(nameof(UrlPokemon), "urlPokemon")]
-    [QueryProperty(nameof(NombrePokemon), "nombrePokemon")]
-    public class DetailViewModel : BaseViewModel
+   
+    public class DetailViewModel : BaseViewModel, IQueryAttributable
     {
         // Instancia del servicio para obtener los detalles del Pokémon
         private readonly PokemonService servicioPokemon;
 
         // Propiedad para recibir la URL del Pokémon al navegar
-        public string UrlPokemon { get; set; }
+        private string urlPokemon;
+        public string UrlPokemon
+        {
+            get => urlPokemon;
+            set => SetProperty(ref urlPokemon, value);
+        }
 
-        // Propiedad para recibir el nombre del Pokémon al navegar. Al asignar el nombre, se carga el detalle.
+        // Propiedad para recibir el nombre del Pokémon al navegar
         private string nombrePokemon;
         public string NombrePokemon
         {
             get => nombrePokemon;
-            set
-            {
-                if (SetProperty(ref nombrePokemon, value))
-                {
-                    // Cuando se asigna el nombre, cargamos el detalle
-                    _ = CargarDetallePokemonAsync();
-                }
-            }
+            set => SetProperty(ref nombrePokemon, value);
         }
 
         // Propiedad para almacenar el detalle del Pokémon obtenido del servicio
@@ -66,14 +61,25 @@ namespace PokeDexMVVM.ViewModels
             set => SetProperty(ref mensajeEstado, value);
         }
 
-        // Contructor que recibe el servicio por DI en lugar de crearlo directamente
+        // Constructor que recibe el servicio por DI en lugar de crearlo directamente
         public DetailViewModel(PokemonService servicio)
         {
             servicioPokemon = servicio;
         }
 
+        // MAUI llama este método con todos los parámetros de navegación ya seteados
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue("urlPokemon", out var url))
+                UrlPokemon = url?.ToString();
+            if (query.TryGetValue("nombrePokemon", out var nombre))
+                NombrePokemon = nombre?.ToString();
+
+            _ = CargarDetallePokemonAsync();
+        }
+
         // Método para cargar el detalle del Pokémon usando la URL recibida. Se maneja cualquier error que pueda ocurrir.
-        private async Task CargarDetallePokemonAsync()
+        public async Task CargarDetallePokemonAsync()
         {
             if (string.IsNullOrEmpty(UrlPokemon)) return;
 
