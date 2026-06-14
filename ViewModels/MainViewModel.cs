@@ -7,7 +7,7 @@ using System.Linq;                          // se usa para filtrar con LINQ
 
 namespace PokeDexMVVM.ViewModels
 {
-    internal class MainViewModel : BaseViewModel
+    public class MainViewModel : BaseViewModel
     {
         // Servicio para consumir la API
         private readonly PokemonService servicioPokemon;
@@ -44,12 +44,12 @@ namespace PokeDexMVVM.ViewModels
         public ICommand CargarPokemonsCommand { get; }
         public ICommand FiltrarPokemonsCommand { get; }
 
-        // Constructor donde se inicializan el servicio y los comandos
-        public MainViewModel()
+        // Constructor recibe el servicio por DI en lugar de crearlo directamente
+        public MainViewModel(PokemonService servicio)
         {
-            servicioPokemon = new PokemonService(); // se instancia el servicio para consumir la API
-            CargarPokemonsCommand = new Command(async () => await CargarPokemonsAsync()); // comando para cargar pokemones
-            FiltrarPokemonsCommand = new Command(FiltrarPokemons); // comando para filtrar pokemones
+            servicioPokemon = servicio;
+            CargarPokemonsCommand = new Command(async () => await CargarPokemonsAsync() );
+            FiltrarPokemonsCommand = new Command(FiltrarPokemons);
         }
 
         // Método para cargar Pokémon desde la API

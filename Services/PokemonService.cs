@@ -6,7 +6,7 @@ using System.Threading.Tasks;   // Para Task
 
 namespace PokeDexMVVM.Services
 {
-    internal class PokemonService
+    public class PokemonService
     {
         // Cliente HTTP para hacer las peticiones
         private readonly HttpClient clientehttp;

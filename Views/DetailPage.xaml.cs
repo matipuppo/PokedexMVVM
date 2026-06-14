@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using PokeDexMVVM.ViewModels;
+﻿using PokeDexMVVM.ViewModels;
 
 namespace PokeDexMVVM.Views
 {
     public partial class DetailPage : ContentPage
     {
-        public DetailPage()
+        public DetailPage(DetailViewModel viewModel)
         {
-            // iniciaiza los componentes de la página y establece el contexto de enlace a una nueva instancia de DetailViewModel
+            // Constructor que recibe el ViewModel por DI y lo conecta a la pagina para que el XAML muestre los datos
             InitializeComponent();
-            
+            BindingContext = viewModel;
+
         }
     }
 }

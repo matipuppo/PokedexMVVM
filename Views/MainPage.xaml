@@ -5,11 +5,6 @@
                  x:Class="PokeDexMVVM.Views.MainPage"
                  BackgroundColor="White">
 
-    <!--Asigna el BindingContext a la vista para enlazar con el MainViewModel-->
-    <!--Esto permite que todos los elementos de la interfaz puedan acceder a las propiedades y comandos del MainViewModel.-->
-    <ContentPage.BindingContext>
-        <viewmodels:MainViewModel />
-    </ContentPage.BindingContext>
 
     <!-- Usamos Grid con 4 filas -->
     <Grid RowDefinitions="Auto,Auto,Auto,*" 

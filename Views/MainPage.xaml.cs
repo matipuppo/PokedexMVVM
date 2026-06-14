@@ -6,10 +6,11 @@ namespace PokeDexMVVM.Views
 {
     public partial class MainPage : ContentPage
     {
-        public MainPage()
+        public MainPage(MainViewModel viewModel)
         {
-            // Inicializa los componentes de la página (definidos en XAML)
+            // Constructor que recibe el View model por el DI y lo conecta a la pagina para que XAML pueda mostrar los datos
             InitializeComponent();
+            BindingContext = viewModel;
         }
 
         // Se ejecuta automáticamente al entrar en MainPage

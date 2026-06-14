@@ -8,7 +8,7 @@ namespace PokeDexMVVM.ViewModels
     // En este caso, recibimos la URL y el nombre del Pokémon.
     [QueryProperty(nameof(UrlPokemon), "urlPokemon")]
     [QueryProperty(nameof(NombrePokemon), "nombrePokemon")]
-    internal class DetailViewModel : BaseViewModel
+    public class DetailViewModel : BaseViewModel
     {
         // Instancia del servicio para obtener los detalles del Pokémon
         private readonly PokemonService servicioPokemon;
@@ -66,9 +66,10 @@ namespace PokeDexMVVM.ViewModels
             set => SetProperty(ref mensajeEstado, value);
         }
 
-        public DetailViewModel()
+        // Contructor que recibe el servicio por DI en lugar de crearlo directamente
+        public DetailViewModel(PokemonService servicio)
         {
-            servicioPokemon = new PokemonService();
+            servicioPokemon = servicio;
         }
 
         // Método para cargar el detalle del Pokémon usando la URL recibida. Se maneja cualquier error que pueda ocurrir.

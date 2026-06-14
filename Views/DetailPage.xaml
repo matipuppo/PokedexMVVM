@@ -5,11 +5,6 @@
              x:Class="PokeDexMVVM.Views.DetailPage"
              BackgroundColor="White">
 
-    <!--Se asigna el BindingContext a la vista para enlazar con el DetailViewModel-->
-    <ContentPage.BindingContext>
-        <viewmodels:DetailViewModel />
-    </ContentPage.BindingContext>
-
     <!-- Contenedor gris principal -->
     <Frame BorderColor="Gray"
            BackgroundColor="#E2E8F0"
