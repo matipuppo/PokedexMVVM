@@ -45,7 +45,7 @@
                                        Grid.Column="0" />
 
 								<!--Nombre del Pokemon-->
-								<Label Text="{Binding Nombre}"
+								<Label Text="{Binding NombreCapitalizado}"
                                        FontSize="18"
                                        FontAttributes="Bold"
                                        TextColor="Black"
