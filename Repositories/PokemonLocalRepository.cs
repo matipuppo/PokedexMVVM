@@ -57,5 +57,11 @@ namespace PokeDexMVVM.Repositories
         // Devuelve el numero de pokemons guardados en el equipo en la bd
         public Task<int> ContarEquipoAsync() =>
             _db.Table<PokemonEquipo>().CountAsync();
+
+        // Verifica si un pokemon ya esta en el equipo buscando por nombre
+        public async Task<bool> EsEnEquipoAsync(string nombre) =>
+            await _db.Table<PokemonEquipo>()
+                       .Where(p => p.Nombre == nombre)
+                        .CountAsync() > 0;
     }
 }

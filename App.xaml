@@ -13,6 +13,9 @@
             <converters:StatToProgressConverter x:Key="StatToProgressConverter"/>
             <converters:BoolToBookmarkConverter x:Key="BoolToBookmarkConverter"/>
 
+            <!--Cambia el icono de pokebola segun si el pokemon esta en el equipo o no-->
+            <converters:BoolToPokeballConverter x:Key="BoolToPokeballConverter"/>
+
             <!-- Estilo global para Labels -->
             <Style TargetType="Label">
                 <!--tamaño de fuentes y color-->

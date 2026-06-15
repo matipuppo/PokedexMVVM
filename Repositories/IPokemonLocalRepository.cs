@@ -34,5 +34,8 @@ namespace PokeDexMVVM.Repositories
         // Devuelve el número de pokemons en el equipo en la bd
         Task<int> ContarEquipoAsync();
 
+        // Verifica si un pokemon ya esa en el equipo en la bd
+        Task<bool> EsEnEquipoAsync(string nombre);
+
     }
 }

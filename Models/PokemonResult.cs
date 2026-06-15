@@ -25,6 +25,14 @@ namespace PokeDexMVVM.Models
             set => SetProperty(ref esFavorito, value);
         }
 
+        // Indica si el pokemon esta en el equipo del usuario
+        private bool esEnEquipo;
+        public bool EsEnEquipo
+        { 
+            get => esEnEquipo;
+            set => SetProperty(ref esEnEquipo, value);
+        }
+
         // Propiedad calculada para mostrar con mayúscula inicial
         public string NombreCapitalizado
         {
