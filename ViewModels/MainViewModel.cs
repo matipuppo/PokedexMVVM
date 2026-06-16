@@ -134,7 +134,7 @@ namespace PokeDexMVVM.ViewModels
             OnPropertyChanged(nameof(ListaPokemons));
         }
 
-        // MEtodo para agregar o quitar pokemon del equipo
+        // Metodo para agregar o quitar pokemon del equipo
         private async Task ToggleEquipoAsync(PokemonResult pokemon)
         {
             if (pokemon.EsEnEquipo)
@@ -143,10 +143,18 @@ namespace PokeDexMVVM.ViewModels
                 var equipo = await repositorio.ObtenerEquipoAsync();
                 var miembro = equipo.FirstOrDefault(e => e.Nombre == pokemon.Nombre);
                 if (miembro != null)
-                    await repositorio.EliminarFavoritoAsync(miembro.Id);
+                    await repositorio.EliminarEquipoAsync(miembro.Id);
             }
             else
             {
+                // Veritica que no este duplicado antes de agregar
+                if (await repositorio.EsEnEquipoAsync(pokemon.Nombre))
+                {
+                    pokemon.EsEnEquipo = true;
+                    await Shell.Current.DisplayAlert("Ya está en tu equipo", $"{pokemon.NombreCapitalizado} ya forma parte de tu equipo.", "OK");
+                    return;
+                }
+
                 // Verifica que no se supere el maximo de 6 pokemons en el equipo
                 var cantidad = await repositorio.ContarEquipoAsync();
                 if (cantidad >= 6)
@@ -165,7 +173,7 @@ namespace PokeDexMVVM.ViewModels
 
             // Actualiza el estado del icono en la UI
             pokemon.EsEnEquipo = !pokemon.EsEnEquipo;
-            OnPropertyChanged(nameof(ListaPokemon));
+            OnPropertyChanged(nameof(ListaPokemons));
         }
 
         // Método para filtrar según el texto de búsqueda

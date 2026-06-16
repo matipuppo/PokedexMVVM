@@ -28,19 +28,17 @@ namespace PokeDexMVVM.Views
         }
 
         // Evento cuando se selecciona un Pokémon en la lista
-        private async void OnPokemonSeleccionado(object sender, SelectionChangedEventArgs e)
+        // Se ejecuta al tocar la imagen/nombre del pokemon, navega al detalle
+        private async void OnPokemonTapped(object sender, TappedEventArgs e)
         {
-            //Obtiene el primer elemento seleccionado en la lista y verifica si es un PokemonResult
-            if (e.CurrentSelection.FirstOrDefault() is PokemonResult seleccionado)
+            if (e.Parameter is PokemonResult seleccionado)
             {
-                // Crea un diccionario de parámetros para pasar a la página de detalles
                 var parametros = new Dictionary<string, object>
                 {
-                    { "urlPokemon", seleccionado.Url }, // URL del Pokémon seleccionado
-                    { "nombrePokemon", seleccionado.Nombre } // Nombre del Pokémon seleccionado
+                    { "urlPokemon", seleccionado.Url },
+                    { "nombrePokemon", seleccionado.Nombre }
                 };
 
-                // Navega a la página de detalles, pasando los parámetros
                 await Shell.Current.GoToAsync(nameof(DetailPage), parametros);
             }
         }

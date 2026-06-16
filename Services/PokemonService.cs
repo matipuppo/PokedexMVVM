@@ -33,8 +33,8 @@ namespace PokeDexMVVM.Services
             };
         }
 
-        // Método para obtener lista de pokemones, trame 99 por defecto
-        public async Task<ListaPokemon> ObtenerListaPokemon(int cantidad = 99)
+        // Método para obtener lista de pokemones, trae 151 por defecto
+        public async Task<ListaPokemon> ObtenerListaPokemon(int cantidad = 151)
         {
             try
             {

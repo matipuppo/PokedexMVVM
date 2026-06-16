@@ -15,6 +15,7 @@
 
             <!--Cambia el icono de pokebola segun si el pokemon esta en el equipo o no-->
             <converters:BoolToPokeballConverter x:Key="BoolToPokeballConverter"/>
+            <converters:BoolToPokeballImageConverter x:Key="BoolToPokeballImageConverter"/>
 
             <!-- Estilo global para Labels -->
             <Style TargetType="Label">
