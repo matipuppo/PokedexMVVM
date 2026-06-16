@@ -107,6 +107,16 @@ namespace PokeDexMVVM.ViewModels
             }
         }
 
+        // Metodo que refresca el estado de favoritos y equipo sin volver a pedir la lista a la API
+        public async Task ActualizarEstadosAsync()
+        {
+            foreach (var pokemon in TodosLosPokemons)
+            {
+                pokemon.EsFavorito = await repositorio.EsFavoritoAsync(pokemon.Nombre);
+                pokemon.EsEnEquipo = await repositorio.EsEnEquipoAsync(pokemon.Nombre);
+            }
+        }
+
         // Metodo para agregar o quitar un pokemon de favoritos
         private async Task ToggleFavoritoAsync(PokemonResult pokemon)
         {
