@@ -52,6 +52,7 @@
             </CollectionView.ItemsLayout>
             
             <!--Plantilla de cada tarjeta pokemon-->
+            
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Padding="10"
@@ -99,6 +100,20 @@
                                     CommandParameter="{Binding .}"
                                     AbsoluteLayout.LayoutBounds="1,0,40,40"
                                     AbsoluteLayout.LayoutFlags="XProportional"/>
+
+
+                            <Button Text="{Binding EsEnEquipo, Converter={StaticResource BoolToPokeballConverter}}"
+                                    FontFamily="MaterialIcons"
+                                    FontSize="24"
+                                    TextColor="{Binding EsEnEquipo, Converter={StaticResource BoolToColorConverter}}"
+                                    BackgroundColor="Transparent"
+                                    Padding="0"
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleEquipoCommand}"
+                                    CommandParameter="{Binding .}"
+                                    AbsoluteLayout.LayoutBounds="1,1,40,40"
+                                    AbsoluteLayout.LayoutFlags="XProportional,YProportional"/>
 
                         </AbsoluteLayout>
 

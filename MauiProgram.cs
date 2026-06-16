@@ -35,12 +35,14 @@ namespace PokeDexMVVM
             builder.Services.AddTransient<MainViewModel>();
             builder.Services.AddTransient<DetailViewModel>();
             builder.Services.AddTransient<FavoritosViewModel>();
-            
+            builder.Services.AddTransient<EquipoViewModel>();
+
 
             //Transient: se crea una nueva instancia de la pagina cada ve que se navea a ella
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<DetailPage>();
             builder.Services.AddTransient<FavoritosPage>();
+            builder.Services.AddTransient<EquipoPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

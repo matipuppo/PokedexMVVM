@@ -1,10 +1,10 @@
-﻿using System.Collections.ObjectModel;       // se usa para ObservableCollection
+﻿using PokeDexMVVM.Models;
+using PokeDexMVVM.Repositories;                          // se usa para filtrar con LINQ
+using PokeDexMVVM.Services;
+using System.Collections.ObjectModel;       // se usa para ObservableCollection
+using System.Linq;
 using System.Threading.Tasks;               // se usa para Task
 using System.Windows.Input;                 // se usa para ICommand
-using PokeDexMVVM.Services;                 
-using PokeDexMVVM.Models;
-using System.Linq;
-using PokeDexMVVM.Repositories;                          // se usa para filtrar con LINQ
 
 namespace PokeDexMVVM.ViewModels
 {
@@ -48,15 +48,17 @@ namespace PokeDexMVVM.ViewModels
         public ICommand CargarPokemonsCommand { get; }
         public ICommand FiltrarPokemonsCommand { get; }
         public ICommand ToggleFavoritoCommand { get; }
+        public ICommand ToggleEquipoCommand { get; }
 
         // Constructor recibe el servicio por DI en lugar de crearlo directamente
         public MainViewModel(PokemonService servicio, IPokemonLocalRepository repositorio)
         {
             servicioPokemon = servicio;
             this.repositorio = repositorio;
-            CargarPokemonsCommand = new Command(async () => await CargarPokemonsAsync() );
+            CargarPokemonsCommand = new Command(async () => await CargarPokemonsAsync());
             FiltrarPokemonsCommand = new Command(FiltrarPokemons);
-            ToggleFavoritoCommand = new Command<PokemonResult>(async(pokemon) => await ToggleFavoritoAsync(pokemon));
+            ToggleFavoritoCommand = new Command<PokemonResult>(async (pokemon) => await ToggleFavoritoAsync(pokemon));
+            ToggleEquipoCommand = new Command<PokemonResult>(async (pokemon) => await ToggleEquipoAsync(pokemon));
         }
 
         // Método para cargar Pokémon desde la API
@@ -86,7 +88,8 @@ namespace PokeDexMVVM.ViewModels
                         Nombre = pokemon.Nombre,
                         Url = pokemon.Url,
                         Imagen = detalle.Sprites.FrontDefault,
-                        EsFavorito = await repositorio.EsFavoritoAsync(pokemon.Nombre)
+                        EsFavorito = await repositorio.EsFavoritoAsync(pokemon.Nombre),
+                        EsEnEquipo = await repositorio.EsEnEquipoAsync(pokemon.Nombre)
                     };
 
                     // Se agrega el resultado a la lista completa y a la lista filtrada
@@ -129,6 +132,40 @@ namespace PokeDexMVVM.ViewModels
             // Actualiaz el estado del icono en la UI
             pokemon.EsFavorito = !pokemon.EsFavorito;
             OnPropertyChanged(nameof(ListaPokemons));
+        }
+
+        // MEtodo para agregar o quitar pokemon del equipo
+        private async Task ToggleEquipoAsync(PokemonResult pokemon)
+        {
+            if (pokemon.EsEnEquipo)
+            {
+                // Si ya esta en el equipo, lo busca por nombre y lo elimina
+                var equipo = await repositorio.ObtenerEquipoAsync();
+                var miembro = equipo.FirstOrDefault(e => e.Nombre == pokemon.Nombre);
+                if (miembro != null)
+                    await repositorio.EliminarFavoritoAsync(miembro.Id);
+            }
+            else
+            {
+                // Verifica que no se supere el maximo de 6 pokemons en el equipo
+                var cantidad = await repositorio.ContarEquipoAsync();
+                if (cantidad >= 6)
+                {
+                    await Shell.Current.DisplayAlert("Equipo Completo", "Ya hay 6 pokemon en tu equipo", "OK");
+                    return;
+                }
+
+                await repositorio.AgregarAEquipoAsync(new PokemonEquipo
+                {
+                    Nombre = pokemon.Nombre,
+                    Url = pokemon.Url,
+                    Imagen = pokemon.Imagen
+                });
+            }
+
+            // Actualiza el estado del icono en la UI
+            pokemon.EsEnEquipo = !pokemon.EsEnEquipo;
+            OnPropertyChanged(nameof(ListaPokemon));
         }
 
         // Método para filtrar según el texto de búsqueda

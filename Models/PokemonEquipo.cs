@@ -11,5 +11,14 @@ namespace PokeDexMVVM.Models
         public string Nombre { get; set; }
         public string Url { get; set; }
         public string Imagen { get; set; }
+
+        public string NombreCapitalizado
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Nombre)) return Nombre;
+                return char.ToUpper(Nombre[0]) + Nombre.Substring(1);
+            }
+        }
     }
 }

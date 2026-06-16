@@ -12,5 +12,8 @@
         <Tab Title="Favoritos">
             <ShellContent Route="FavoritosPage" ContentTemplate="{DataTemplate views:FavoritosPage}" />
         </Tab>
+        <Tab Title="Equipo">
+            <ShellContent Route="EquipoPage" ContentTemplate="{DataTemplate views:EquipoPage}"/>
+        </Tab>
     </TabBar>
 </Shell>

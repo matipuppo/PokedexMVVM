@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PokeDexMVVM.Views.EquipoPage"
+             BackgroundColor="White"
+             Title="Equipo">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="15" Spacing="15">
+
+            <!-- Título -->
+            <Label Text="Mi Equipo Pokémon"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="Black"
+                   HorizontalOptions="Center"/>
+
+            <!-- Mensaje de estado -->
+            <Label Text="{Binding MensajeEstado}"
+                   FontSize="18"
+                   TextColor="Gray"
+                   HorizontalOptions="Center"/>
+
+            <!-- Lista del equipo -->
+            <CollectionView ItemsSource="{Binding Equipo}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="Gray"
+                               BackgroundColor="#E2E8F0"
+                               CornerRadius="10"
+                               Padding="10"
+                               Margin="0">
+
+                            <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="10">
+
+                                <!-- Imagen del pokemon -->
+                                <Image Source="{Binding Imagen}"
+                                       WidthRequest="60"
+                                       HeightRequest="60"
+                                       Grid.Column="0"/>
+
+                                <!-- Nombre del pokemon -->
+                                <Label Text="{Binding NombreCapitalizado}"
+                                       FontSize="18"
+                                       FontAttributes="Bold"
+                                       TextColor="Black"
+                                       VerticalOptions="Center"
+                                       Grid.Column="1"/>
+
+                                <!-- Botón Eliminar del equipo -->
+                                <Button Text="&#xE872;"
+                                        FontFamily="MaterialIcons"
+                                        FontSize="22"
+                                        BackgroundColor="Transparent"
+                                        TextColor="#EF4444"
+                                        Padding="0"
+                                        WidthRequest="40"
+                                        HeightRequest="40"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EliminarDelEquipoCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Grid.Column="2"/>
+
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

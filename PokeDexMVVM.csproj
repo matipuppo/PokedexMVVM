@@ -77,6 +77,9 @@
 	  <MauiXaml Update="Views\DetailPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\EquipoPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\FavoritosPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
