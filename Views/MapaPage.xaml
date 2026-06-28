@@ -36,7 +36,7 @@
 			<!-- Botón que dispara la búsqueda de Pokémon cercanos por GPS -->
 			<Button Text="Buscar Pokémon cercanos"
                     Command="{Binding BuscarPokemonsCommand}"
-                    BackgroundColor="#EF4444" TextColor="White" CornerRadius="10"/>
+                    BackgroundColor="#3B82F6" TextColor="White" CornerRadius="10"/>
 		</VerticalStackLayout>
 
 		<!-- Fila 1: Contenedor del mapa nativo.-->

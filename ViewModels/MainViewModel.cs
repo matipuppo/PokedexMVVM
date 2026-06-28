@@ -72,32 +72,37 @@ namespace PokeDexMVVM.ViewModels
                 // Se obtiene la lista de pokemones desde el servicio
                 var lista = await servicioPokemon.ObtenerListaPokemon();
 
-                // Se limpian las listas antes de agregar los nuevos datos
-                TodosLosPokemons.Clear();
-                ListaPokemons.Clear();
+                // se arma toda primero y se vuelca de una sola vez al final
+                var resultados = new List<PokemonResult>();
 
-                // Recorremos cada pokemon obtenido para obtener su detalle y agregarlo a las listas
                 foreach (var pokemon in lista.Resultados)
                 {
-                    // Se obtiene el detalle de cada pokemon para obtener su imagen
-                    var detalle = await servicioPokemon.ObtenerDetallePokemonAsync(pokemon.Url);
+                    // El ID está al final de la URL (ej: ".../pokemon/25/") -> se extrae
+                    string id = pokemon.Url.TrimEnd('/').Split('/').Last();
 
-                    // Se crea un nuevo objeto PokemonResult con el nombre, URL y la imagen del pokemon
-                    var resultado = new PokemonResult
+                    // La imagen se arma directamente con el ID
+                    string imagenUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png";
+
+                    resultados.Add(new PokemonResult
                     {
                         Nombre = pokemon.Nombre,
                         Url = pokemon.Url,
-                        Imagen = detalle.Sprites.FrontDefault,
+                        Imagen = imagenUrl,
                         EsFavorito = await repositorio.EsFavoritoAsync(pokemon.Nombre),
                         EsEnEquipo = await repositorio.EsEnEquipoAsync(pokemon.Nombre)
-                    };
+                    });
+                }
 
-                    // Se agrega el resultado a la lista completa y a la lista filtrada
+                // Se muestran todos los pokemones juntos
+                TodosLosPokemons.Clear();
+                ListaPokemons.Clear();
+                foreach (var resultado in resultados)
+                {
                     TodosLosPokemons.Add(resultado);
                     ListaPokemons.Add(resultado);
                 }
 
-                // Se muestra un mensaje de estado indicando que los pokemones se cargaron exitosamente
+                // Mensaje de estado indicando que se cargaron exitosamente
                 MensajeEstado = "Pokemones cargados exitosamente.";
             }
             catch (Exception ex)

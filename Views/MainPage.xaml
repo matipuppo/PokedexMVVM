@@ -31,13 +31,14 @@
                Margin="10"
                TextColor="Black"/>
 
-        
+
         <CollectionView Grid.Row="3"
                         ItemsSource="{Binding ListaPokemons}">
 
+            <!-- En teléfono 2 columnas, en escritorio 4. Evita que las cards queden angostas -->
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical"
-                                 Span="3"
+                                 Span="{OnIdiom Phone=2, Desktop=4, Default=3}"
                                  VerticalItemSpacing="10"
                                  HorizontalItemSpacing="10"/>
             </CollectionView.ItemsLayout>
@@ -45,27 +46,30 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Padding="10"
-                           Margin="8"
+                           Margin="5"
                            BorderColor="Gray"
-                           CornerRadius="30"
+                           CornerRadius="20"
                            BackgroundColor="#E2E8F0"
-                           HeightRequest="260">
+                           HeightRequest="200">
 
                         <AbsoluteLayout>
 
                             <!-- Imagen y nombre: tocar esta zona navega al detalle -->
                             <VerticalStackLayout HorizontalOptions="Center"
-                                                 Padding="10"
+                                                 Padding="5"
                                                  AbsoluteLayout.LayoutBounds="0,0,1,1"
                                                  AbsoluteLayout.LayoutFlags="All">
 
                                 <Image Source="{Binding Imagen}"
-                                       HeightRequest="180"
+                                       HeightRequest="120"
                                        Aspect="AspectFit"/>
 
                                 <Label Text="{Binding NombreCapitalizado}"
                                        FontAttributes="Bold"
+                                       FontSize="14"
                                        HorizontalOptions="Center"
+                                       HorizontalTextAlignment="Center"
+                                       LineBreakMode="TailTruncation"
                                        Margin="0,5,0,0"
                                        TextColor="Black"/>
 
@@ -109,7 +113,6 @@
         </CollectionView>
     </Grid>
 </ContentPage>
-
 
 
 
