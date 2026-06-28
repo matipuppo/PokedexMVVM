@@ -1,11 +1,20 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <EnableDefaultMauiItems>false</EnableDefaultMauiItems>
+    <SkipValidateMauiImplicitPackageReferences>true</SkipValidateMauiImplicitPackageReferences>
   </PropertyGroup>
+
+  <ItemGroup>
+    <MauiIcon Remove="@(MauiIcon)" />
+    <MauiSplashScreen Remove="@(MauiSplashScreen)" />
+    <MauiImage Remove="@(MauiImage)" />
+    <MauiAsset Remove="@(MauiAsset)" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.4" />
