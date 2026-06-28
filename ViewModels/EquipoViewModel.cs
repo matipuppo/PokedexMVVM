@@ -51,9 +51,9 @@ namespace PokeDexMVVM.ViewModels
                 MensajeEstado = $"Error al cargar equipo: {ex.Message}";
             }
         }
-
+        
         // Elimina un pokemon del equipo y recarga la lista
-        private async Task EliminarDelEquipoAsync(PokemonEquipo pokemon)
+        public async Task EliminarDelEquipoAsync(PokemonEquipo pokemon)
         {
             await repositorio.EliminarEquipoAsync(pokemon.Id);
             await CargarEquipoAsync();
