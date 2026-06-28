@@ -6,16 +6,7 @@
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <UseMaui>false</UseMaui>
-    <EnableDefaultMauiItems>false</EnableDefaultMauiItems>
-    <SkipValidateMauiImplicitPackageReferences>true</SkipValidateMauiImplicitPackageReferences>
   </PropertyGroup>
-
-  <ItemGroup>
-    <MauiIcon Remove="@(MauiIcon)" />
-    <MauiSplashScreen Remove="@(MauiSplashScreen)" />
-    <MauiImage Remove="@(MauiImage)" />
-    <MauiAsset Remove="@(MauiAsset)" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.4" />
@@ -25,7 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PokeDexMVVM.csproj" />
+    <ProjectReference Include="..\PokeDexMVVM.csproj">
+      <ExcludeAssets>build;buildTransitive</ExcludeAssets>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>
