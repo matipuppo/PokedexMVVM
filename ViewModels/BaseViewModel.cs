@@ -13,9 +13,18 @@ namespace PokeDexMVVM.ViewModels
         // CallerMemberName permite que se use el nombre de la popiedad automáticamente si no se especifica
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            // Siempre despachamos al hilo principal para evitar COMException en transiciones de página en Windows
-            MainThread.BeginInvokeOnMainThread(() =>
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+            try
+            {
+                // Si estamos en un hilo que no es el principal, usamos BeginInvokeOnMainThread para notificar a la UI
+                MainThread.BeginInvokeOnMainThread(() =>
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+            }
+            catch
+            {
+                // En xUnit no hay runtime de MAUI,  entonces  Mainthead tira excepcion
+                // En este caso, notificamos directamente sin usar MainThread
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         //Metodo auxiliar para asignar valores y notificar cambios

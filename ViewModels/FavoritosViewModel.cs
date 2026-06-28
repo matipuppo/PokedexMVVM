@@ -71,7 +71,7 @@ namespace PokeDexMVVM.ViewModels
         }
 
         //Eliminar un pokemon de favoritos y recargar la lista
-        private async Task EliminarFavoritosAsync(PokemonFavorito pokemon)
+        public async Task EliminarFavoritosAsync(PokemonFavorito pokemon)
         {
             await repositorio.EliminarFavoritoAsync(pokemon.Id);
             await CargarFavoritosAsync();
