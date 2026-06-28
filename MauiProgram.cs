@@ -3,7 +3,6 @@ using PokeDexMVVM.Repositories;
 using PokeDexMVVM.ViewModels;
 using PokeDexMVVM.Services;
 using PokeDexMVVM.Views;
-
 namespace PokeDexMVVM
 {
     public static class MauiProgram
@@ -13,6 +12,9 @@ namespace PokeDexMVVM
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+#if ANDROID
+                .UseMauiMaps()
+#endif
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -31,11 +33,15 @@ namespace PokeDexMVVM
             // Singletos: una sola instancia del servicio HTTP para toda la app
             builder.Services.AddSingleton<PokemonService>();
 
+            // Singleton: servicio de geolocalización (sensor GPS)
+            builder.Services.AddSingleton<LocationService>();
+
             //Transient: una nueva instancia del viwModel cada vez que se navega a la pantalla
             builder.Services.AddTransient<MainViewModel>();
             builder.Services.AddTransient<DetailViewModel>();
             builder.Services.AddTransient<FavoritosViewModel>();
             builder.Services.AddTransient<EquipoViewModel>();
+            builder.Services.AddTransient<MapaViewModel>();
 
 
             //Transient: se crea una nueva instancia de la pagina cada ve que se navea a ella
@@ -43,6 +49,7 @@ namespace PokeDexMVVM
             builder.Services.AddTransient<DetailPage>();
             builder.Services.AddTransient<FavoritosPage>();
             builder.Services.AddTransient<EquipoPage>();
+            builder.Services.AddTransient<MapaPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

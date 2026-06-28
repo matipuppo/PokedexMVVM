@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PokeDexMVVM.Views.MapaPage"
+             BackgroundColor="White"
+             Title="Mapa">
+
+	<!-- Grid principal con 3 filas: encabezado, contenedor del mapa y lista de pokémons -->
+	<Grid RowDefinitions="Auto, Auto, *">
+
+		<!-- Fila 0: Encabezado con título, estado, coordenadas y botón de búsqueda -->
+		<VerticalStackLayout Grid.Row="0" Padding="15" Spacing="8">
+
+			<!-- Título principal de la pantalla -->
+			<Label Text="Pokémon cerca tuyo"
+                   FontSize="22" FontAttributes="Bold"
+                   TextColor="Black" HorizontalOptions="Center"/>
+
+			<!-- Mensaje de estado: "Obteniendo ubicación...", "Buscando...", errores -->
+			<Label Text="{Binding MensajeEstado}"
+                   FontSize="14" TextColor="Gray" HorizontalOptions="Center"/>
+
+			<!-- Coordenadas GPS reales del usuario, solo visible cuando se obtuvo la ubicación -->
+			<Label IsVisible="{Binding UbicacionObtenida}"
+                   TextColor="#2563EB" FontSize="13" HorizontalOptions="Center">
+				<Label.FormattedText>
+					<FormattedString>
+						<Span Text="Tu ubicación: "/>
+						<Span Text="{Binding LatitudUsuario, StringFormat='{0:0.0000}'}"/>
+						<Span Text=", "/>
+						<Span Text="{Binding LongitudUsuario, StringFormat='{0:0.0000}'}"/>
+					</FormattedString>
+				</Label.FormattedText>
+			</Label>
+
+			<!-- Botón que dispara la búsqueda de Pokémon cercanos por GPS -->
+			<Button Text="Buscar Pokémon cercanos"
+                    Command="{Binding BuscarPokemonsCommand}"
+                    BackgroundColor="#EF4444" TextColor="White" CornerRadius="10"/>
+		</VerticalStackLayout>
+
+		<!-- Fila 1: Contenedor del mapa nativo.-->
+            
+		<ContentView x:Name="MapContainer" Grid.Row="1" HeightRequest="250"/>
+
+		<!-- Fila 2: Lista de Pokémon en 2 columnas usando FlexLayout. -->
+		<ScrollView Grid.Row="2" Padding="10,5">
+			<FlexLayout BindableLayout.ItemsSource="{Binding PokemonsCercanos}"
+                        Wrap="Wrap" Direction="Row" AlignItems="Start">
+				<BindableLayout.ItemTemplate>
+					<DataTemplate>
+
+						
+						<Frame FlexLayout.Basis="50%"
+                               Padding="5" HasShadow="False"
+                               BorderColor="Transparent" BackgroundColor="Transparent">
+
+							<!-- Tarjeta visible de cada Pokémon -->
+							<Frame BorderColor="#CBD5E1" BackgroundColor="#E2E8F0"
+                                   CornerRadius="12" Padding="10" HasShadow="True">
+								<VerticalStackLayout HorizontalOptions="Center" Spacing="5">
+
+									<!-- Imagen del Pokémon obtenida desde la PokéAPI -->
+									<Image Source="{Binding Imagen}" WidthRequest="70" HeightRequest="70"
+                                           HorizontalOptions="Center"/>
+
+									<!-- Nombre del Pokémon con la primera letra en mayúscula -->
+									<Label Text="{Binding NombreCapitalizado}" FontSize="15" FontAttributes="Bold"
+                                           TextColor="Black" HorizontalOptions="Center"/>
+
+									<!-- Distancia calculada entre el usuario y el Pokémon -->
+									<Label Text="{Binding DistanciaTexto}" FontSize="13" TextColor="#2563EB"
+                                           HorizontalOptions="Center"/>
+
+								</VerticalStackLayout>
+							</Frame>
+						</Frame>
+
+					</DataTemplate>
+				</BindableLayout.ItemTemplate>
+			</FlexLayout>
+		</ScrollView>
+
+	</Grid>
+</ContentPage>

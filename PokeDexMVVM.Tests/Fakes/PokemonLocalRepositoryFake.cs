@@ -4,7 +4,7 @@ using PokeDexMVVM.Repositories;
 namespace PokeDexMVVM.Tests.Fakes
 {
     //Implementacion falsa de repositorios que usa listas en memoria
-    internal class PokemonLocalRepositoryFake : IPokemonLocalRepository
+    public class PokemonLocalRepositoryFake : IPokemonLocalRepository
     {
         //Listas en memoria que simulan las tablas de la bd
         private readonly List<PokemonFavorito> _favoritos = new();

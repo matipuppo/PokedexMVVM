@@ -15,5 +15,8 @@
         <Tab Title="Equipo">
             <ShellContent Route="EquipoPage" ContentTemplate="{DataTemplate views:EquipoPage}"/>
         </Tab>
+        <Tab Title="Mapa">
+            <ShellContent Route="MapaPage" ContentTemplate="{DataTemplate views:MapaPage}"/>
+        </Tab>
     </TabBar>
 </Shell>
