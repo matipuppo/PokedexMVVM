@@ -3,6 +3,7 @@ using PokeDexMVVM.Services;
 using Microsoft.Maui.Devices.Sensors;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Microsoft.Maui.Devices;
 
 namespace PokeDexMVVM.ViewModels
 {
@@ -129,6 +130,16 @@ namespace PokeDexMVVM.ViewModels
                     PokemonsCercanos.Add(p);
 
                 MensajeEstado = $"Se encontraron {PokemonsCercanos.Count} Pokémon cerca tuyo.";
+
+                // Vibra para avisar que se encontraron Pokémon (sensor de vibración)
+                try
+                {
+                    Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(500));
+                }
+                catch (FeatureNotSupportedException)
+                {
+                    // En algunas plataformas (ej. Windows) la vibración no está soportada
+                }
             }
             catch (Exception ex)
             {
