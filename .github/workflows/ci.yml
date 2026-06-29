@@ -10,16 +10,53 @@ jobs:
   test:
     runs-on: windows-latest
 
-    steps:
-      - uses: actions/checkout@v4
+    # Matriz: compila y testea en dos configuraciones (Debug y Release)
+    strategy:
+      matrix:
+        configuration: [ Debug, Release ]
 
+    steps:
+      # 1. Descarga el código del repositorio
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Instala el SDK de .NET 10
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
 
+      # 3. Caching: cachea los paquetes NuGet para acelerar corridas siguientes.
+      #    La clave depende del hash de los .csproj; si no cambian, reutiliza la caché.
+      - name: Cache NuGet
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      # 4. Instala el workload de MAUI (necesario para compilar el proyecto)
       - name: Install MAUI workload
         run: dotnet workload install maui
 
+      # 5. Restauración explícita de dependencias del proyecto de tests
+      - name: Restore
+        run: dotnet restore PokeDexMVVM.Tests/PokeDexMVVM.Tests.csproj
+
+      # 6. Compilación explícita en la configuración de la matriz (sin volver a restaurar)
+      - name: Build
+        run: dotnet build PokeDexMVVM.Tests/PokeDexMVVM.Tests.csproj --configuration ${{ matrix.configuration }} --framework net10.0-windows10.0.19041.0 --no-restore
+
+      # 7. Ejecución de los tests, generando un reporte .trx (sin volver a compilar)
       - name: Test
-        run: dotnet test PokeDexMVVM.Tests/PokeDexMVVM.Tests.csproj --framework net10.0-windows10.0.19041.0
+        run: dotnet test PokeDexMVVM.Tests/PokeDexMVVM.Tests.csproj --configuration ${{ matrix.configuration }} --framework net10.0-windows10.0.19041.0 --no-build --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults
+
+      # 8. Generación de artefactos: sube los resultados de los tests como artefacto descargable.
+      #    'if: always()' hace que se suban aunque algún test falle.
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.configuration }}
+          path: ./TestResults
