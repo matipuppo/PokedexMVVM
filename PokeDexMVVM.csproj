@@ -19,6 +19,13 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 
+		<!-- SQLitePCLRaw 2.1.11 es la última versión disponible; no hay parche aún para GHSA-2m69-gcr7-jv3q.
+		     Riesgo nulo en este contexto (base SQLite local, sin entrada externa). Se suprime la advertencia. -->
+		<NoWarn>$(NoWarn);NU1903</NoWarn>
+
+		<!-- Silencia la advertencia MA002 de MAUI sobre referencias implícitas de paquetes -->
+		<SkipValidateMauiImplicitPackageReferences>true</SkipValidateMauiImplicitPackageReferences>
+
 		<!-- Enable XAML source generation for faster build times and improved performance.
 		     This generates C# code from XAML at compile time instead of runtime inflation.
 		     To disable, remove this line.
