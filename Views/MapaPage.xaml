@@ -5,22 +5,19 @@
              BackgroundColor="White"
              Title="Mapa">
 
-    <!-- Grid principal con 3 filas: encabezado, contenedor del mapa y lista de pokémons -->
+    <!-- Grid principal con 3 filas: encabezado, mapa y lista de pokémons -->
     <Grid RowDefinitions="Auto, Auto, *">
 
         <!-- Fila 0: Encabezado con título, estado, coordenadas y botón de búsqueda -->
         <VerticalStackLayout Grid.Row="0" Padding="15" Spacing="8">
 
-            <!-- Título principal de la pantalla -->
             <Label Text="Pokémon cerca tuyo"
                    FontSize="22" FontAttributes="Bold"
                    TextColor="Black" HorizontalOptions="Center"/>
 
-            <!-- Mensaje de estado: "Obteniendo ubicación...", "Buscando...", errores -->
             <Label Text="{Binding MensajeEstado}"
                    FontSize="14" TextColor="Gray" HorizontalOptions="Center"/>
 
-            <!-- Coordenadas GPS reales del usuario, solo visible cuando se obtuvo la ubicación -->
             <Label IsVisible="{Binding UbicacionObtenida}"
                    TextColor="#2563EB" FontSize="13" HorizontalOptions="Center">
                 <Label.FormattedText>
@@ -33,27 +30,39 @@
                 </Label.FormattedText>
             </Label>
 
-            <!-- Botón que dispara la búsqueda de Pokémon cercanos por GPS -->
             <Button Text="Buscar Pokémon cercanos"
                     Command="{Binding BuscarPokemonsCommand}"
                     BackgroundColor="#3B82F6" TextColor="White" CornerRadius="10"/>
         </VerticalStackLayout>
 
-        <!-- Fila 1: Contenedor del mapa nativo.
-             En Android se rellena con el control Map en el code-behind.
-             En Windows se oculta (HeightRequest=0, IsVisible=false) desde el code-behind. -->
-        <ContentView x:Name="MapContainer" Grid.Row="1" HeightRequest="250"/>
+        <!-- Fila 1: Mapa nativo + cartelito propio superpuesto -->
+        <Grid Grid.Row="1">
 
-        <!-- Fila 2: Lista de Pokémon en 2 columnas usando FlexLayout.
-             El FlexLayout NO scrollea solo, por eso va dentro de un ScrollView.
-             Cada slot ocupa el 50% del ancho (Basis="50%") => exactamente 2 columnas. -->
+            <!-- Contenedor del mapa (se llena en code-behind solo en Android) -->
+            <ContentView x:Name="MapContainer" HeightRequest="250"/>
+
+            <!-- Cartelito propio que se muestra al tocar una tarjeta (oculto por defecto) -->
+            <Frame x:Name="CartelitoSeleccion" IsVisible="False"
+                   BackgroundColor="White" BorderColor="#CBD5E1" CornerRadius="10"
+                   Padding="12,6" HasShadow="True"
+                   HorizontalOptions="Center" VerticalOptions="Start" Margin="0,10,0,0">
+                <VerticalStackLayout Spacing="2">
+                    <Label x:Name="CartelitoNombre" FontAttributes="Bold"
+                           TextColor="Black" HorizontalOptions="Center"/>
+                    <Label x:Name="CartelitoDistancia" FontSize="12"
+                           TextColor="#2563EB" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+
+        <!-- Fila 2: Lista de Pokémon en 2 columnas -->
         <ScrollView Grid.Row="2" Padding="10,5">
             <FlexLayout BindableLayout.ItemsSource="{Binding PokemonsCercanos}"
                         Wrap="Wrap" Direction="Row" AlignItems="Start">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
 
-                        <!-- Slot exterior: ocupa el 50% del ancho. Transparente, sin margen. -->
+                        <!-- Slot exterior: ocupa el 50% del ancho -->
                         <Frame FlexLayout.Basis="50%"
                                Padding="5" HasShadow="False"
                                BorderColor="Transparent" BackgroundColor="Transparent">
@@ -62,26 +71,19 @@
                             <Frame BorderColor="#CBD5E1" BackgroundColor="#E2E8F0"
                                    CornerRadius="12" Padding="10" HasShadow="True">
 
-                                <!-- Al tocar la tarjeta, centra el mapa en ese Pokémon -->
+                                <!-- Al tocar la tarjeta, centra el mapa y muestra el cartelito -->
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="OnPokemonCercanoTapped"
                                                           CommandParameter="{Binding .}"/>
                                 </Frame.GestureRecognizers>
 
                                 <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
-
-                                    <!-- Imagen del Pokémon obtenida desde la PokéAPI -->
                                     <Image Source="{Binding Imagen}" WidthRequest="70" HeightRequest="70"
                                            HorizontalOptions="Center"/>
-
-                                    <!-- Nombre del Pokémon con la primera letra en mayúscula -->
                                     <Label Text="{Binding NombreCapitalizado}" FontSize="15" FontAttributes="Bold"
                                            TextColor="Black" HorizontalOptions="Center"/>
-
-                                    <!-- Distancia calculada entre el usuario y el Pokémon -->
                                     <Label Text="{Binding DistanciaTexto}" FontSize="13" TextColor="#2563EB"
                                            HorizontalOptions="Center"/>
-
                                 </VerticalStackLayout>
                             </Frame>
                         </Frame>

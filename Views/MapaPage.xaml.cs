@@ -48,6 +48,9 @@ namespace PokeDexMVVM.Views
             // Limpia los pines anteriores antes de volver a dibujar
             mapa.Pins.Clear();
 
+            // Oculta el cartelito de selección anterior (nueva búsqueda)
+            CartelitoSeleccion.IsVisible = false;
+
             // Si ya se obtuvo la ubicación, centra el mapa en el usuario (radio de 1 km)
             if (viewModel.UbicacionObtenida)
             {
@@ -68,7 +71,7 @@ namespace PokeDexMVVM.Views
             }
         }
 
-        // Centra el mapa en el Pokémon que se tocó en la lista de tarjetas.
+        // Centra el mapa en el Pokémon tocado y muestra el cartelito con su info.
         private void OnPokemonCercanoTapped(object sender, TappedEventArgs e)
         {
             // El mapa solo existe en Android; en Windows no hay nada que centrar
@@ -77,9 +80,14 @@ namespace PokeDexMVVM.Views
             // El Pokémon tocado llega en el CommandParameter del gesto (e.Parameter)
             if (e.Parameter is PokemonEnMapa pokemon)
             {
-                // Centra y hace zoom en la ubicación de ese Pokémon (radio de 200 m)
+                // Centra y hace zoom cerca de ese Pokémon (radio de 150 m)
                 var ubicacion = new Location(pokemon.Latitud, pokemon.Longitud);
-                mapa.MoveToRegion(MapSpan.FromCenterAndRadius(ubicacion, Distance.FromMeters(200)));
+                mapa.MoveToRegion(MapSpan.FromCenterAndRadius(ubicacion, Distance.FromMeters(150)));
+
+                // Muestra el cartelito propio con el nombre y la distancia
+                CartelitoNombre.Text = pokemon.NombreCapitalizado;
+                CartelitoDistancia.Text = pokemon.DistanciaTexto;
+                CartelitoSeleccion.IsVisible = true;
             }
         }
     }
